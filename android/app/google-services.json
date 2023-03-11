@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "670531281374",
+    "project_id": "squirrelmedia-3e509",
+    "storage_bucket": "squirrelmedia-3e509.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:670531281374:android:d7f111dfced3f76eca7d4f",
+        "android_client_info": {
+          "package_name": "com.example.firebase_auth_test"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "670531281374-9hva68arlu0f857t8saos6slqojh983t.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDEKmopBSC-6a8iZGa2cUzA5j1vx8TUQPc"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "670531281374-9hva68arlu0f857t8saos6slqojh983t.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
