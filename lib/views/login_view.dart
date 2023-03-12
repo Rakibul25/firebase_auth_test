@@ -1,3 +1,6 @@
+import 'package:firebase_auth_test/models/user.dart';
+import 'package:firebase_auth_test/views/profile.dart';
+import 'package:firebase_auth_test/views/signupview.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -32,7 +35,7 @@ class _LoginViewState extends State<LoginView> {
           begin: Alignment.topLeft,
           end: Alignment.bottomRight,
           colors: [
-            Colors.red,
+            Colors.redAccent,
             Colors.purple,
           ],
         )),
@@ -45,7 +48,6 @@ class _LoginViewState extends State<LoginView> {
                 mainAxisAlignment: MainAxisAlignment.start,
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  SizedBox(height: 16.0),
                   Column(
                     children: [
                       Row(
@@ -57,151 +59,273 @@ class _LoginViewState extends State<LoginView> {
                             color: Colors.white,
                           ),
                           Text('Go back',
-                              style: TextStyle(fontSize: 18, color: Colors.white)),
+                              style:
+                                  TextStyle(fontSize: 18, color: Colors.white)),
                         ],
                       ),
                       Row(
                         mainAxisAlignment: MainAxisAlignment.start,
                         children: [
                           Padding(
-                            padding: const EdgeInsets.all(11.0),
+                            padding: const EdgeInsets.only(left: 11.0),
                             child: Text('Welcome back',
-                                style: TextStyle(fontSize: 25, color: Colors.white)),
+                                style: TextStyle(
+                                    fontSize: 25, color: Colors.white)),
                           ),
                         ],
                       ),
-
                     ],
                   ),
-                  SizedBox(height: 15,),
+                  SizedBox(
+                      height:
+                          isKeyboard ? size.height * .008 : size.height * .04),
                   Text('Enter your details to start swoopin.',
                       style: TextStyle(fontSize: 15, color: Colors.white)),
-                  SizedBox(height: 16.0),
+                  SizedBox(
+                      height:
+                          isKeyboard ? size.height * .01 : size.height * .02),
                   TextField(
                     controller: _emailController,
                     keyboardType: TextInputType.emailAddress,
                     style: TextStyle(color: Colors.white),
                     decoration: InputDecoration(
-                      labelText: "Enter you E-mail ID", //babel text
-                      hintText: "example: mdrakib.mri93@gmail.com", //hint text
-                      hintStyle: TextStyle(fontSize: 18, fontWeight: FontWeight.bold,color: Colors.white54), //hint text style
-                      labelStyle: TextStyle(fontSize: 13, color: Colors.white), //label style
+                      labelText: "Enter you E-mail ID",
+                      //babel text
+                      hintText: "example: mdrakib.mri93@gmail.com",
+                      //hint text
+                      hintStyle: TextStyle(
+                          fontSize: 18,
+                          fontWeight: FontWeight.bold,
+                          color: Colors.white54),
+                      //hint text style
+                      labelStyle: TextStyle(fontSize: 17, color: Colors.white),
+                      //label style
                       enabledBorder: OutlineInputBorder(
                         borderSide: BorderSide(color: Colors.white),
                       ),
                       focusedBorder: OutlineInputBorder(
                         borderSide: BorderSide(color: Colors.white),
                       ),
-                      filled: true,
-                      fillColor: emailtap? Colors.white : Colors.black12 ,
+                      floatingLabelBehavior: FloatingLabelBehavior.always,
                     ),
-                    onTap: () {
-                      setState(() {
-                        emailtap = true; // Update the state of the widget when the TextField is tapped
-                      });
-                    },
-                    onEditingComplete: () {
-                      setState(() {
-                        emailtap = false; // Reset the state of the widget when editing is complete
-                      });
-                    },
                     onChanged: (value) {
-                      emailtap = true;
                       Provider.of<LoginModel>(context, listen: false).email =
                           value;
                     },
                   ),
-                  SizedBox(height: 16.0),
+                  SizedBox(
+                      height:
+                          isKeyboard ? size.height * .008 : size.height * .02),
                   TextField(
                     controller: _passwordController,
                     obscureText: Provider.of<LoginModel>(context).isObscure,
+                    style: TextStyle(color: Colors.white),
                     decoration: InputDecoration(
-                      labelText: 'Password',
+                      labelText: 'Enter Password',
+                      labelStyle: TextStyle(fontSize: 15, color: Colors.white),
                       border: OutlineInputBorder(),
                       suffixIcon: IconButton(
-                        icon: Icon(Icons.visibility),
+                        icon: Icon(
+                          Icons.visibility,
+                          color: Colors.white,
+                        ),
                         onPressed: () {
                           Provider.of<LoginModel>(context, listen: false)
                               .toggleObscure();
                         },
                       ),
+                      enabledBorder: OutlineInputBorder(
+                        borderSide: BorderSide(color: Colors.white),
+                      ),
+                      focusedBorder: OutlineInputBorder(
+                        borderSide: BorderSide(color: Colors.white),
+                      ),
+                      floatingLabelBehavior: FloatingLabelBehavior.always,
                     ),
                     onChanged: (value) {
                       Provider.of<LoginModel>(context, listen: false).password =
                           value;
                     },
                   ),
-                  SizedBox(height: 16.0),
+                  SizedBox(
+                      height:
+                          isKeyboard ? size.height * .001 : size.height * .003),
                   Row(
                     mainAxisAlignment: MainAxisAlignment.end,
                     children: [
                       TextButton(
                         onPressed: () {},
-                        child: Text('Forgot Password?'),
-                      ),
-                    ],
-                  ),
-                  SizedBox(height: 16.0),
-                  ElevatedButton(
-                    onPressed: Provider.of<LoginModel>(context).isLoading
-                        ? null
-                        : () async {
-                            try {
-                              await Provider.of<LoginModel>(context,
-                                      listen: false)
-                                  .login();
-                              Navigator.of(context)
-                                  .pushReplacementNamed('/home');
-                            } on FirebaseAuthException catch (e) {
-                              ScaffoldMessenger.of(context)
-                                  .showSnackBar(SnackBar(
-                                content: Text('Login failed: ${e.message}'),
-                                duration: Duration(seconds: 3),
-                              ));
-                            }
-                          },
-                    child: Provider.of<LoginModel>(context).isLoading
-                        ? CircularProgressIndicator()
-                        : Text('Login'),
-                  ),
-                  SizedBox(height: 16),
-                  Row(
-                    children: [
-                      Expanded(
-                        child: Divider(),
-                      ),
-                      SizedBox(width: 16.0),
-                      Text('or sign in with'),
-                      SizedBox(width: 16.0),
-                      Expanded(
-                        child: Divider(),
+                        child: Text(
+                          'Forgot Password?',
+                          style: TextStyle(
+                              fontSize: 15,
+                              color: Colors.white,
+                              decoration: TextDecoration.underline),
+                        ),
                       ),
                     ],
                   ),
                   SizedBox(
-                      height: isKeyboard ? size.height * .1 : size.height * .4),
+                      height:
+                          isKeyboard ? size.height * .001 : size.height * .2),
                   Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                    mainAxisAlignment: MainAxisAlignment.start,
                     children: [
-                      ElevatedButton.icon(
+                      TextButton(
                         onPressed: () {},
-                        icon: Icon(Icons.g_mobiledata),
-                        label: Text('Google'),
-                      ),
-                      ElevatedButton.icon(
-                        onPressed: () {},
-                        icon: Icon(Icons.facebook),
-                        label: Text('Facebook'),
+                        child: Text(
+                          'Or Log In Using',
+                          style: TextStyle(fontSize: 15, color: Colors.white),
+                        ),
                       ),
                     ],
                   ),
                   Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
                     children: [
-                      Text('New to our app?'),
-                      TextButton(
-                        onPressed: () {},
-                        child: Text('Create an account'),
+                      ElevatedButton(
+                        style: ButtonStyle(
+                          backgroundColor:
+                              MaterialStateProperty.all<Color>(Colors.white),
+                          fixedSize: MaterialStateProperty.all<Size>(
+                            Size(80, 80),
+                          ),
+                        ),
+                        onPressed: Provider.of<LoginModel>(context).isLoading
+                            ? null
+                            : () async {
+                                try {
+                                  await Provider.of<LoginModel>(context,
+                                          listen: false)
+                                      .login();
+                                  Navigator.of(context)
+                                      .pushReplacementNamed('/signup');
+                                } on FirebaseAuthException catch (e) {
+                                  ScaffoldMessenger.of(context)
+                                      .showSnackBar(SnackBar(
+                                    content: Text('Login failed: ${e.message}'),
+                                    duration: Duration(seconds: 3),
+                                  ));
+                                }
+                              },
+                        child: Provider.of<LoginModel>(context).isLoading
+                            ? CircularProgressIndicator()
+                            : Image.asset(
+                                "assets/google.png",
+                                height: 70,
+                                width: 70,
+                              ),
+                      ),
+                      SizedBox(
+                        width: 15,
+                      ),
+                      ElevatedButton(
+                        style: ButtonStyle(
+                          backgroundColor:
+                              MaterialStateProperty.all<Color>(Colors.white),
+                          fixedSize: MaterialStateProperty.all<Size>(
+                            Size(80, 80),
+                          ),
+                        ),
+                        onPressed: Provider.of<LoginModel>(context).isLoading
+                            ? null
+                            : () async {
+                                try {
+                                  await Provider.of<LoginModel>(context,
+                                          listen: false)
+                                      .login();
+                                  Navigator.of(context)
+                                      .pushReplacementNamed('/home');
+                                } on FirebaseAuthException catch (e) {
+                                  ScaffoldMessenger.of(context)
+                                      .showSnackBar(SnackBar(
+                                    content: Text('Login failed: ${e.message}'),
+                                    duration: Duration(seconds: 3),
+                                  ));
+                                }
+                              },
+                        child: Provider.of<LoginModel>(context).isLoading
+                            ? CircularProgressIndicator()
+                            : Image.asset(
+                                "assets/fb.png",
+                                height: 70,
+                                width: 70,
+                              ),
+                      ),
+                    ],
+                  ),
+                  SizedBox(
+                      height:
+                          isKeyboard ? size.height * .02 : size.height * .1),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Text(
+                            'New to Swoop?',
+                            style: TextStyle(fontSize: 15, color: Colors.white),
+                          ),
+                          GestureDetector(
+                              onTap: () {
+                                Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                      builder: (context) => SignupScreen()),
+                                );
+                              },
+                              child: Text(
+                                'Create an Account here',
+                                style: TextStyle(
+                                    fontSize: 15,
+                                    color: Colors.white,
+                                    decoration: TextDecoration.underline),
+                              )),
+                        ],
+                      ),
+                      ElevatedButton(
+                        style: ButtonStyle(
+                          backgroundColor:
+                              MaterialStateProperty.all<Color>(Colors.white),
+                          fixedSize: MaterialStateProperty.all<Size>(
+                            Size(150, 50),
+                          ),
+                        ),
+                        onPressed: Provider.of<LoginModel>(context).isLoading
+                            ? null
+                            : () async {
+                                try {
+                                  await Provider.of<LoginModel>(context,
+                                          listen: false)
+                                      .login();
+                                  UserModel usermodel = UserModel(name: "name", email: "email", password: "password");
+                                  Navigator.push(
+                                    context,
+                                    MaterialPageRoute(
+                                        builder: (context) => HomePage(userModel: usermodel)),
+                                  );
+                                } on FirebaseAuthException catch (e) {
+                                  ScaffoldMessenger.of(context)
+                                      .showSnackBar(SnackBar(
+                                    content: Text('Login failed: ${e.message}'),
+                                    duration: Duration(seconds: 3),
+                                  ));
+                                }
+                              },
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            Text(
+                              "Log In",
+                              style:
+                                  TextStyle(color: Colors.purple, fontSize: 20),
+                            ),
+                            Icon(
+                              Icons.arrow_forward,
+                              color: Colors.red,
+                            )
+                          ],
+                        ),
                       ),
                     ],
                   ),

@@ -1,8 +1,10 @@
 import 'package:firebase_auth_test/views/login_view.dart';
+import 'package:firebase_auth_test/views/signupview.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
+import 'controllers/signupController.dart';
 import 'models/login_model.dart';
 
 void main() async {
@@ -19,16 +21,17 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MultiProvider(
       providers: [
-        ChangeNotifierProvider<LoginModel>(
-          create: (context) => LoginModel(),
-        ),
+        ChangeNotifierProvider(create: (_) => LoginModel()),
+        ChangeNotifierProvider(create: (_) => UserProvider()),
       ],
       child: MaterialApp(
         title: 'My App',
-        initialRoute: '/login',
+        initialRoute: '/',
         routes: {
           '/login': (context) => LoginView(),
+          '/signup': (context) => SignupScreen(),
         },
+        home: LoginView(),
       ),
     );
   }
