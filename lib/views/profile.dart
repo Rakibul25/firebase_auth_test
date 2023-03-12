@@ -4,9 +4,9 @@ import 'package:share_plus/share_plus.dart';
 
 import '../controllers/homeController.dart';
 
-
 class HomePage extends StatefulWidget {
   final String userdata;
+
   HomePage({required this.userdata});
 
   @override
@@ -15,7 +15,6 @@ class HomePage extends StatefulWidget {
 
 class _HomePageState extends State<HomePage> {
   late HomeController _controller;
-
 
   @override
   Widget build(BuildContext context) {
@@ -26,11 +25,19 @@ class _HomePageState extends State<HomePage> {
         title: Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
-            Text("Account", style: TextStyle(fontSize: 20,color: Colors.black)),
+            const Text("Account",
+                style: TextStyle(fontSize: 20, color: Colors.black)),
             Row(
               children: [
-                Icon(Icons.edit,size: 16,color: Colors.purple,),
-                Text("Edit Profile", style: TextStyle(fontSize: 15,color: Colors.purple),),
+                const Icon(
+                  Icons.edit,
+                  size: 16,
+                  color: Colors.purple,
+                ),
+                const Text(
+                  "Edit Profile",
+                  style: TextStyle(fontSize: 15, color: Colors.purple),
+                ),
               ],
             )
           ],
@@ -44,11 +51,11 @@ class _HomePageState extends State<HomePage> {
           children: [
             Text(
               '${widget.userdata}',
-              style: TextStyle(fontSize: 20),
+              style: const TextStyle(fontSize: 20),
             ),
-            SizedBox(height: 16),
-            Divider(),
-            SizedBox(height: 16),
+            const SizedBox(height: 16),
+            const Divider(),
+            const SizedBox(height: 16),
             InkWell(
               onTap: () {
                 _controller.rateApp();
@@ -56,48 +63,49 @@ class _HomePageState extends State<HomePage> {
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
-                  Text(
+                  const Text(
                     'Edit Interesets',
                     style: TextStyle(fontSize: 20, color: Colors.black),
                   ),
-                  Icon(Icons.arrow_forward_ios)
+                  const Icon(Icons.arrow_forward_ios)
                 ],
               ),
             ),
-            SizedBox(height: 16),
+            const SizedBox(height: 16),
             InkWell(
+              //share app
               onTap: () {
                 _controller.shareApp();
               },
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
-                  Text(
+                  const Text(
                     'Edit Preferences',
                     style: TextStyle(fontSize: 20, color: Colors.black),
                   ),
-                  Icon(Icons.arrow_forward_ios)
+                  const Icon(Icons.arrow_forward_ios)
                 ],
               ),
             ),
-            SizedBox(height: 16),
+            const SizedBox(height: 16),
             InkWell(
               onTap: () async {
                 //_controller.rateApp();
                 await Share.share("https//www.playstore.com", subject: "App");
               },
-              child:Row(
+              child: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
-                  Text(
+                  const Text(
                     'Share This App',
                     style: TextStyle(fontSize: 20, color: Colors.black),
                   ),
-                  Icon(Icons.arrow_forward_ios)
+                  const Icon(Icons.arrow_forward_ios)
                 ],
               ),
             ),
-            SizedBox(height: 16),
+            const SizedBox(height: 16),
             InkWell(
               onTap: () {
                 _controller.rateApp();
@@ -105,15 +113,15 @@ class _HomePageState extends State<HomePage> {
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
-                  Text(
+                  const Text(
                     'Rate Us',
                     style: TextStyle(fontSize: 20, color: Colors.black),
                   ),
-                  Icon(Icons.arrow_forward_ios)
+                  const Icon(Icons.arrow_forward_ios)
                 ],
               ),
             ),
-            SizedBox(height: 16),
+            const SizedBox(height: 16),
             InkWell(
               onTap: () {
                 _controller.rateApp();
@@ -121,15 +129,15 @@ class _HomePageState extends State<HomePage> {
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
-                  Text(
+                  const Text(
                     'About Us',
                     style: TextStyle(fontSize: 20, color: Colors.black),
                   ),
-                  Icon(Icons.arrow_forward_ios)
+                  const Icon(Icons.arrow_forward_ios)
                 ],
               ),
             ),
-            SizedBox(height: 16),
+            const SizedBox(height: 16),
             InkWell(
               onTap: () {
                 _controller.rateApp();
@@ -137,16 +145,15 @@ class _HomePageState extends State<HomePage> {
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
-                  Text(
+                  const Text(
                     'Change Password',
                     style: TextStyle(fontSize: 20, color: Colors.black),
                   ),
-                  Icon(Icons.arrow_forward_ios)
+                  const Icon(Icons.arrow_forward_ios)
                 ],
               ),
             ),
-            SizedBox(height: 16),
-
+            const SizedBox(height: 16),
           ],
         ),
       ),
@@ -154,10 +161,10 @@ class _HomePageState extends State<HomePage> {
         currentIndex: 0, // index of current page
         items: [
           BottomNavigationBarItem(
-            icon: Icon(Icons.manage_accounts),
+            icon: const Icon(Icons.manage_accounts),
             label: '${widget.userdata}',
           ),
-          BottomNavigationBarItem(
+          const BottomNavigationBarItem(
             icon: Icon(Icons.settings),
             label: 'Settings',
           ),

@@ -9,10 +9,13 @@ class UserProvider extends ChangeNotifier {
   bool isObscure = true;
   final FirebaseAuth _auth = FirebaseAuth.instance;
   final FirebaseFirestore _firestore = FirebaseFirestore.instance;
-  bool isLoading = true;
+  bool isLoading = false;
+  bool isChecking = false;
   UserModel get usermodel => _usermodel;
 
 
+
+  //google signup
   final googleSignIn = GoogleSignIn();
   GoogleSignInAccount? _user;
   GoogleSignInAccount get user => _user!;
@@ -50,18 +53,23 @@ class UserProvider extends ChangeNotifier {
     notifyListeners();
   }
 
+  //password regex
   bool isValidPass() {
     // Check if password meets requirements
     final passwordRegex = RegExp(
         r'^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,14}$');
     return passwordRegex.hasMatch(_usermodel.password);
   }
+  //mail regex
   bool isValidMail() {
     // Check if password meets requirements
     final emailRegex = RegExp(r'^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$');
     return emailRegex.hasMatch(_usermodel.email);
   }
+  //manual signup
   void signUp() async {
+    isChecking = true;
+    notifyListeners();
     try {
       // Create new user in Firebase Authentication
       UserCredential userCredential =
@@ -85,6 +93,8 @@ class UserProvider extends ChangeNotifier {
       print(e.toString());
     } finally{
       isLoading = false;
+      notifyListeners();
+      isChecking = false;
       notifyListeners();
     }
   }

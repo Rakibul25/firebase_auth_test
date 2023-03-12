@@ -6,7 +6,7 @@ import 'package:provider/provider.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
 
-import '../models/login_model.dart';
+import '../controllers/login_controller.dart';
 import 'dialog.dart';
 
 class LoginView extends StatefulWidget {
@@ -16,22 +16,21 @@ class LoginView extends StatefulWidget {
 
 class _LoginViewState extends State<LoginView> {
   final TextEditingController _emailController = TextEditingController();
-
   final TextEditingController _passwordController = TextEditingController();
 
   bool emailtap = false;
-
   bool passtap = false;
 
   @override
   Widget build(BuildContext context) {
     Size size = MediaQuery.of(context).size;
+    //to adjust screen size when keyboard popup
     final bool isKeyboard = MediaQuery.of(context).viewInsets.bottom != 0;
     return Scaffold(
       backgroundColor: Colors.purple,
       body: Container(
         height: size.height,
-        decoration: BoxDecoration(
+        decoration: const BoxDecoration(
             gradient: LinearGradient(
           begin: Alignment.topLeft,
           end: Alignment.bottomRight,
@@ -43,8 +42,8 @@ class _LoginViewState extends State<LoginView> {
         child: SafeArea(
           child: SingleChildScrollView(
             child: Padding(
-              padding:
-                  EdgeInsets.only(top: 2.0, left: 16.0, right: 16.0, bottom: 2),
+              padding: const EdgeInsets.only(
+                  top: 2.0, left: 16.0, right: 16.0, bottom: 2),
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.start,
                 crossAxisAlignment: CrossAxisAlignment.start,
@@ -53,7 +52,7 @@ class _LoginViewState extends State<LoginView> {
                     children: [
                       Row(
                         mainAxisAlignment: MainAxisAlignment.start,
-                        children: [
+                        children: const [
                           Icon(
                             Icons.arrow_left_sharp,
                             size: 35,
@@ -66,9 +65,9 @@ class _LoginViewState extends State<LoginView> {
                       ),
                       Row(
                         mainAxisAlignment: MainAxisAlignment.start,
-                        children: [
+                        children: const [
                           Padding(
-                            padding: const EdgeInsets.only(left: 11.0),
+                            padding: EdgeInsets.only(left: 11.0),
                             child: Text('Welcome back',
                                 style: TextStyle(
                                     fontSize: 25, color: Colors.white)),
@@ -80,16 +79,17 @@ class _LoginViewState extends State<LoginView> {
                   SizedBox(
                       height:
                           isKeyboard ? size.height * .008 : size.height * .04),
-                  Text('Enter your details to start swoopin.',
+                  const Text('Enter your details to start swoopin.',
                       style: TextStyle(fontSize: 15, color: Colors.white)),
                   SizedBox(
                       height:
                           isKeyboard ? size.height * .01 : size.height * .02),
+                  //email field
                   TextField(
                     controller: _emailController,
                     keyboardType: TextInputType.emailAddress,
-                    style: TextStyle(color: Colors.white),
-                    decoration: InputDecoration(
+                    style: const TextStyle(color: Colors.white),
+                    decoration: const InputDecoration(
                       labelText: "Enter you E-mail ID",
                       //babel text
                       hintText: "example: mdrakib.mri93@gmail.com",
@@ -117,16 +117,19 @@ class _LoginViewState extends State<LoginView> {
                   SizedBox(
                       height:
                           isKeyboard ? size.height * .008 : size.height * .02),
+                  //Password field
                   TextField(
                     controller: _passwordController,
                     obscureText: Provider.of<LoginModel>(context).isObscure,
-                    style: TextStyle(color: Colors.white),
+                    style: const TextStyle(color: Colors.white),
                     decoration: InputDecoration(
                       labelText: 'Enter Password',
-                      labelStyle: TextStyle(fontSize: 15, color: Colors.white),
-                      border: OutlineInputBorder(),
+                      labelStyle:
+                          const TextStyle(fontSize: 15, color: Colors.white),
+                      border: const OutlineInputBorder(),
+                      //to hide and visible password
                       suffixIcon: IconButton(
-                        icon: Icon(
+                        icon: const Icon(
                           Icons.visibility,
                           color: Colors.white,
                         ),
@@ -135,10 +138,10 @@ class _LoginViewState extends State<LoginView> {
                               .toggleObscure();
                         },
                       ),
-                      enabledBorder: OutlineInputBorder(
+                      enabledBorder: const OutlineInputBorder(
                         borderSide: BorderSide(color: Colors.white),
                       ),
-                      focusedBorder: OutlineInputBorder(
+                      focusedBorder: const OutlineInputBorder(
                         borderSide: BorderSide(color: Colors.white),
                       ),
                       floatingLabelBehavior: FloatingLabelBehavior.always,
@@ -156,16 +159,8 @@ class _LoginViewState extends State<LoginView> {
                     children: [
                       TextButton(
                         onPressed: () {
-                          showDialog(
-                              context: context,
-                              builder: (c){
-                                Future.delayed(Duration(seconds: 5), () {
-                                  Navigator.of(context).pop(true);
-                                });
-                                return loadingDialog(message: "message");
-                              });
                         },
-                        child: Text(
+                        child: const Text(
                           'Forgot Password?',
                           style: TextStyle(
                               fontSize: 15,
@@ -183,7 +178,7 @@ class _LoginViewState extends State<LoginView> {
                     children: [
                       TextButton(
                         onPressed: () {},
-                        child: Text(
+                        child: const Text(
                           'Or Log In Using',
                           style: TextStyle(fontSize: 15, color: Colors.white),
                         ),
@@ -192,30 +187,38 @@ class _LoginViewState extends State<LoginView> {
                   ),
                   Row(
                     children: [
+
+                      //google login
                       ElevatedButton(
                         style: ButtonStyle(
                           backgroundColor:
                               MaterialStateProperty.all<Color>(Colors.white),
                           fixedSize: MaterialStateProperty.all<Size>(
-                            Size(80, 80),
+                            const Size(80, 80),
                           ),
                         ),
-
                         onPressed: () {
-                          context.read<LoginModel>().googleLogin();
-                          Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                                builder: (context) => HomePage(userdata: context.read<LoginModel>().user.email.toString())),
-                          );
+                          context
+                              .read<LoginModel>()
+                              .googleLogin()
+                              .then((value) => Navigator.push(
+                                    context,
+                                    MaterialPageRoute(
+                                        builder: (context) => HomePage(
+                                            userdata: context
+                                                .read<LoginModel>()
+                                                .user
+                                                .email
+                                                .toString())),
+                                  ));
                         },
-                        child:Image.asset(
-                                "assets/google.png",
-                                height: 70,
-                                width: 70,
-                              ),
+                        child: Image.asset(
+                          "assets/google.png",
+                          height: 70,
+                          width: 70,
+                        ),
                       ),
-                      SizedBox(
+                      const SizedBox(
                         width: 15,
                       ),
                       ElevatedButton(
@@ -223,16 +226,15 @@ class _LoginViewState extends State<LoginView> {
                           backgroundColor:
                               MaterialStateProperty.all<Color>(Colors.white),
                           fixedSize: MaterialStateProperty.all<Size>(
-                            Size(80, 80),
+                            const Size(80, 80),
                           ),
                         ),
-
-                        onPressed: () {  },
+                        onPressed: () {},
                         child: Image.asset(
-                                "assets/fb.png",
-                                height: 70,
-                                width: 70,
-                              ),
+                          "assets/fb.png",
+                          height: 70,
+                          width: 70,
+                        ),
                       ),
                     ],
                   ),
@@ -245,10 +247,12 @@ class _LoginViewState extends State<LoginView> {
                       Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
-                          Text(
+                          const Text(
                             'New to Swoop?',
                             style: TextStyle(fontSize: 15, color: Colors.white),
                           ),
+
+                          //to navigate signup page
                           GestureDetector(
                               onTap: () {
                                 Navigator.push(
@@ -257,7 +261,7 @@ class _LoginViewState extends State<LoginView> {
                                       builder: (context) => SignupScreen()),
                                 );
                               },
-                              child: Text(
+                              child: const Text(
                                 'Create an Account here',
                                 style: TextStyle(
                                     fontSize: 15,
@@ -266,12 +270,13 @@ class _LoginViewState extends State<LoginView> {
                               )),
                         ],
                       ),
+                      //signin action
                       ElevatedButton(
                         style: ButtonStyle(
                           backgroundColor:
                               MaterialStateProperty.all<Color>(Colors.white),
                           fixedSize: MaterialStateProperty.all<Size>(
-                            Size(150, 50),
+                            const Size(150, 50),
                           ),
                         ),
                         onPressed: Provider.of<LoginModel>(context).isLoading
@@ -281,44 +286,58 @@ class _LoginViewState extends State<LoginView> {
                                   await Provider.of<LoginModel>(context,
                                           listen: false)
                                       .login();
-                                  context.read<LoginModel>().isChecking? null:
-                                  showDialog(
-                                      context: context,
-                                      builder: (c){
-                                        return loadingDialog(message: "Logging In");
-                                      });
-                                  Future.delayed(Duration(seconds: 3)).then((value) {
-                                    Navigator.pop(context); // Dismiss the dialog
+                                  context.read<LoginModel>().isChecking
+                                      ? null
+                                      : showDialog(
+                                          context: context,
+                                          builder: (c) {
+                                            return loadingDialog(
+                                                message: "Logging In");
+                                          });
+                                  Future.delayed(const Duration(seconds: 3))
+                                      .then((value) {
+                                    Navigator.pop(
+                                        context); // Dismiss the dialog
                                   });
-                                  context.read<LoginModel>().isLogging? null:
-                                  showDialog(
-                                      context: context,
-                                      builder: (c){
-                                        return loadingDialog(message: "Checking Account Info");
-                                      });
-                                  Future.delayed(Duration(seconds: 5)).then((value) {
-                                    Navigator.pop(context); // Dismiss the dialog
+                                  context.read<LoginModel>().isLogging
+                                      ? null
+                                      : showDialog(
+                                          context: context,
+                                          builder: (c) {
+                                            return loadingDialog(
+                                                message:
+                                                    "Checking Account Info");
+                                          });
+                                  Future.delayed(const Duration(seconds: 5))
+                                      .then((value) {
+                                    Navigator.pop(
+                                        context); // Dismiss the dialog
                                   });
 
                                   print("tap");
-                                  Future.delayed(Duration(seconds: 5)).then((value) {
+                                  Future.delayed(const Duration(seconds: 5))
+                                      .then((value) {
                                     Navigator.push(
                                       context,
                                       MaterialPageRoute(
-                                          builder: (context) => HomePage(userdata: context.read<LoginModel>().email.toString())),
+                                          builder: (context) => HomePage(
+                                              userdata: context
+                                                  .read<LoginModel>()
+                                                  .email
+                                                  .toString())),
                                     );
                                   });
                                 } on FirebaseAuthException catch (e) {
                                   ScaffoldMessenger.of(context)
                                       .showSnackBar(SnackBar(
                                     content: Text('Login failed: ${e.message}'),
-                                    duration: Duration(seconds: 3),
+                                    duration: const Duration(seconds: 3),
                                   ));
                                 }
                               },
                         child: Row(
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          children: [
+                          children: const [
                             Text(
                               "Log In",
                               style:
