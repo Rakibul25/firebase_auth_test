@@ -13,16 +13,18 @@ class loadingDialog extends StatelessWidget {
         children: [
           Container(
             alignment: Alignment.center,
-            padding: const EdgeInsets.only(top: 14),
+            padding: const EdgeInsets.only(top: 14,bottom: 14),
             child: const CircularProgressIndicator(
               valueColor: AlwaysStoppedAnimation(Colors.pinkAccent),
             ),
           ),
+
           Text(
-            message.toString()+", please wait..",
+            message.toString(),
           )
         ],
       ),
     );
   }
+
 }

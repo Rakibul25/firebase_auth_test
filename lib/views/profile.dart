@@ -1,13 +1,13 @@
 import 'package:firebase_auth_test/models/user.dart';
 import 'package:flutter/material.dart';
+import 'package:share_plus/share_plus.dart';
 
 import '../controllers/homeController.dart';
 
 
 class HomePage extends StatefulWidget {
-  final UserModel userModel;
-
-  HomePage({required this.userModel});
+  final String userdata;
+  HomePage({required this.userdata});
 
   @override
   _HomePageState createState() => _HomePageState();
@@ -16,17 +16,26 @@ class HomePage extends StatefulWidget {
 class _HomePageState extends State<HomePage> {
   late HomeController _controller;
 
-  @override
-  void initState() {
-    super.initState();
-    _controller = HomeController(userModel: widget.userModel);
-  }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: Colors.white,
       appBar: AppBar(
-        title: Text('Home'),
+        backgroundColor: Colors.white,
+        title: Row(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children: [
+            Text("Account", style: TextStyle(fontSize: 20,color: Colors.black)),
+            Row(
+              children: [
+                Icon(Icons.edit,size: 16,color: Colors.purple,),
+                Text("Edit Profile", style: TextStyle(fontSize: 15,color: Colors.purple),),
+              ],
+            )
+          ],
+        ),
+        automaticallyImplyLeading: false,
       ),
       body: Padding(
         padding: const EdgeInsets.all(16.0),
@@ -34,33 +43,25 @@ class _HomePageState extends State<HomePage> {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Text(
-              '${widget.userModel.name} - ${widget.userModel.email}',
+              '${widget.userdata}',
               style: TextStyle(fontSize: 20),
             ),
             SizedBox(height: 16),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                Text(
-                  'Push Notifications',
-                  style: TextStyle(fontSize: 18),
-                ),
-
-              ],
-            ),
-            SizedBox(height: 32),
-            Text(
-              'Other Options',
-              style: TextStyle(fontSize: 18),
-            ),
+            Divider(),
             SizedBox(height: 16),
             InkWell(
               onTap: () {
                 _controller.rateApp();
               },
-              child: Text(
-                'Rate App',
-                style: TextStyle(fontSize: 16, color: Colors.blue),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  Text(
+                    'Edit Interesets',
+                    style: TextStyle(fontSize: 20, color: Colors.black),
+                  ),
+                  Icon(Icons.arrow_forward_ios)
+                ],
               ),
             ),
             SizedBox(height: 16),
@@ -68,11 +69,84 @@ class _HomePageState extends State<HomePage> {
               onTap: () {
                 _controller.shareApp();
               },
-              child: Text(
-                'Share App',
-                style: TextStyle(fontSize: 16, color: Colors.blue),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  Text(
+                    'Edit Preferences',
+                    style: TextStyle(fontSize: 20, color: Colors.black),
+                  ),
+                  Icon(Icons.arrow_forward_ios)
+                ],
               ),
             ),
+            SizedBox(height: 16),
+            InkWell(
+              onTap: () async {
+                //_controller.rateApp();
+                await Share.share("https//www.playstore.com", subject: "App");
+              },
+              child:Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  Text(
+                    'Share This App',
+                    style: TextStyle(fontSize: 20, color: Colors.black),
+                  ),
+                  Icon(Icons.arrow_forward_ios)
+                ],
+              ),
+            ),
+            SizedBox(height: 16),
+            InkWell(
+              onTap: () {
+                _controller.rateApp();
+              },
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  Text(
+                    'Rate Us',
+                    style: TextStyle(fontSize: 20, color: Colors.black),
+                  ),
+                  Icon(Icons.arrow_forward_ios)
+                ],
+              ),
+            ),
+            SizedBox(height: 16),
+            InkWell(
+              onTap: () {
+                _controller.rateApp();
+              },
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  Text(
+                    'About Us',
+                    style: TextStyle(fontSize: 20, color: Colors.black),
+                  ),
+                  Icon(Icons.arrow_forward_ios)
+                ],
+              ),
+            ),
+            SizedBox(height: 16),
+            InkWell(
+              onTap: () {
+                _controller.rateApp();
+              },
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  Text(
+                    'Change Password',
+                    style: TextStyle(fontSize: 20, color: Colors.black),
+                  ),
+                  Icon(Icons.arrow_forward_ios)
+                ],
+              ),
+            ),
+            SizedBox(height: 16),
+
           ],
         ),
       ),
@@ -80,8 +154,8 @@ class _HomePageState extends State<HomePage> {
         currentIndex: 0, // index of current page
         items: [
           BottomNavigationBarItem(
-            icon: Icon(Icons.home),
-            label: 'Home',
+            icon: Icon(Icons.manage_accounts),
+            label: '${widget.userdata}',
           ),
           BottomNavigationBarItem(
             icon: Icon(Icons.settings),

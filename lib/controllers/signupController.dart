@@ -1,6 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
+import 'package:google_sign_in/google_sign_in.dart';
 import '../models/user.dart';
 
 class UserProvider extends ChangeNotifier {
@@ -9,8 +10,26 @@ class UserProvider extends ChangeNotifier {
   final FirebaseAuth _auth = FirebaseAuth.instance;
   final FirebaseFirestore _firestore = FirebaseFirestore.instance;
   bool isLoading = true;
-
   UserModel get usermodel => _usermodel;
+
+
+  final googleSignIn = GoogleSignIn();
+  GoogleSignInAccount? _user;
+  GoogleSignInAccount get user => _user!;
+
+  Future googleLogin() async {
+    final googleUser = await googleSignIn.signIn();
+    if(googleUser == null) return;
+    _user = googleUser;
+
+    final googleAuth = await googleUser.authentication;
+    final credential = GoogleAuthProvider.credential(
+      accessToken: googleAuth.accessToken,
+      idToken: googleAuth.idToken,
+    );
+    await FirebaseAuth.instance.signInWithCredential(credential);
+    notifyListeners();
+  }
 
   void setName(String name) {
     _usermodel.name = name;
@@ -31,11 +50,16 @@ class UserProvider extends ChangeNotifier {
     notifyListeners();
   }
 
-  bool isValid() {
+  bool isValidPass() {
     // Check if password meets requirements
     final passwordRegex = RegExp(
         r'^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,14}$');
     return passwordRegex.hasMatch(_usermodel.password);
+  }
+  bool isValidMail() {
+    // Check if password meets requirements
+    final emailRegex = RegExp(r'^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$');
+    return emailRegex.hasMatch(_usermodel.email);
   }
   void signUp() async {
     try {

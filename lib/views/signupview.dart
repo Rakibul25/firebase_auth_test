@@ -1,9 +1,11 @@
 import 'package:firebase_auth_test/views/dialog.dart';
 import 'package:firebase_auth_test/views/login_view.dart';
+import 'package:firebase_auth_test/views/profile.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
 import '../controllers/signupController.dart';
+import '../models/user.dart';
 
 class SignupScreen extends StatelessWidget {
   final TextEditingController _emailController = TextEditingController();
@@ -102,6 +104,15 @@ class SignupScreen extends StatelessWidget {
                     SizedBox(
                         height:
                         isKeyboard ? size.height * .008 : size.height * .02),
+                    Text(
+                      context.watch<UserProvider>().isValidMail()
+                          ? 'Email Valid'
+                          : '* Email Invalid',
+                      style: TextStyle(color: Colors.white,fontSize: 15),
+                    ),
+                    SizedBox(
+                        height:
+                        isKeyboard ? size.height * .008 : size.height * .02),
                     TextField(
                       controller: _emailController,
                       keyboardType: TextInputType.emailAddress,
@@ -164,8 +175,11 @@ class SignupScreen extends StatelessWidget {
                         context.read<UserProvider>().setPassword(value);
                       },
                     ),
+                    SizedBox(
+                        height:
+                        isKeyboard ? size.height * .008 : size.height * .02),
                     Text(
-                      context.watch<UserProvider>().isValid()
+                      context.watch<UserProvider>().isValidPass()
                           ? 'Password Valid'
                           : '* Password Invalid',
                       style: TextStyle(color: Colors.white,fontSize: 15),
@@ -225,7 +239,15 @@ class SignupScreen extends StatelessWidget {
                             ),
                           ),
 
-                          onPressed: () {  },
+                          onPressed: () {
+                            context.read<UserProvider>().googleLogin();
+                            print("tap");
+                            Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                  builder: (context) => HomePage(userdata: context.read<UserProvider>().user.email.toString())),
+                            );
+                            },
                           child: Image.asset(
                             "assets/google.png",
                             height: 60,
@@ -284,21 +306,28 @@ class SignupScreen extends StatelessWidget {
                         ),
                         ElevatedButton(
                           style: ButtonStyle(
-                            backgroundColor: context.read<UserProvider>().isValid()
+                            backgroundColor: context.read<UserProvider>().isValidPass()
                                 ?
                             MaterialStateProperty.all<Color>(Colors.white) : MaterialStateProperty.all<Color>(Colors.grey),
                             fixedSize: MaterialStateProperty.all<Size>(
                               Size(150, 50),
                             ),
                           ),
-                          onPressed: context.read<UserProvider>().isValid() && context.read<UserProvider>().isLoading
+                          onPressed: context.read<UserProvider>().isValidPass() && context.read<UserProvider>().isValidMail()
                               ? () {
+                            context.read<UserProvider>().isLoading?
                             showDialog(
                                 context: context,
                                 builder: (c){
                                   return loadingDialog(message: "message");
-                                });
+                                }): null;
                             context.read<UserProvider>().signUp();
+                            UserModel usermodel = UserModel(name: _nameController.text, email: _emailController.text, password: "pass");
+                            Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                  builder: (context) => HomePage(userdata: context.read<UserProvider>().usermodel.name.toString())),
+                            );
                             // Handle form submission
                           }
                               : null,

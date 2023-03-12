@@ -7,6 +7,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
 
 import '../models/login_model.dart';
+import 'dialog.dart';
 
 class LoginView extends StatefulWidget {
   @override
@@ -154,7 +155,16 @@ class _LoginViewState extends State<LoginView> {
                     mainAxisAlignment: MainAxisAlignment.end,
                     children: [
                       TextButton(
-                        onPressed: () {},
+                        onPressed: () {
+                          showDialog(
+                              context: context,
+                              builder: (c){
+                                Future.delayed(Duration(seconds: 5), () {
+                                  Navigator.of(context).pop(true);
+                                });
+                                return loadingDialog(message: "message");
+                              });
+                        },
                         child: Text(
                           'Forgot Password?',
                           style: TextStyle(
@@ -190,26 +200,16 @@ class _LoginViewState extends State<LoginView> {
                             Size(80, 80),
                           ),
                         ),
-                        onPressed: Provider.of<LoginModel>(context).isLoading
-                            ? null
-                            : () async {
-                                try {
-                                  await Provider.of<LoginModel>(context,
-                                          listen: false)
-                                      .login();
-                                  Navigator.of(context)
-                                      .pushReplacementNamed('/signup');
-                                } on FirebaseAuthException catch (e) {
-                                  ScaffoldMessenger.of(context)
-                                      .showSnackBar(SnackBar(
-                                    content: Text('Login failed: ${e.message}'),
-                                    duration: Duration(seconds: 3),
-                                  ));
-                                }
-                              },
-                        child: Provider.of<LoginModel>(context).isLoading
-                            ? CircularProgressIndicator()
-                            : Image.asset(
+
+                        onPressed: () {
+                          context.read<LoginModel>().googleLogin();
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                                builder: (context) => HomePage(userdata: context.read<LoginModel>().user.email.toString())),
+                          );
+                        },
+                        child:Image.asset(
                                 "assets/google.png",
                                 height: 70,
                                 width: 70,
@@ -226,26 +226,9 @@ class _LoginViewState extends State<LoginView> {
                             Size(80, 80),
                           ),
                         ),
-                        onPressed: Provider.of<LoginModel>(context).isLoading
-                            ? null
-                            : () async {
-                                try {
-                                  await Provider.of<LoginModel>(context,
-                                          listen: false)
-                                      .login();
-                                  Navigator.of(context)
-                                      .pushReplacementNamed('/home');
-                                } on FirebaseAuthException catch (e) {
-                                  ScaffoldMessenger.of(context)
-                                      .showSnackBar(SnackBar(
-                                    content: Text('Login failed: ${e.message}'),
-                                    duration: Duration(seconds: 3),
-                                  ));
-                                }
-                              },
-                        child: Provider.of<LoginModel>(context).isLoading
-                            ? CircularProgressIndicator()
-                            : Image.asset(
+
+                        onPressed: () {  },
+                        child: Image.asset(
                                 "assets/fb.png",
                                 height: 70,
                                 width: 70,
@@ -298,12 +281,33 @@ class _LoginViewState extends State<LoginView> {
                                   await Provider.of<LoginModel>(context,
                                           listen: false)
                                       .login();
-                                  UserModel usermodel = UserModel(name: "name", email: "email", password: "password");
-                                  Navigator.push(
-                                    context,
-                                    MaterialPageRoute(
-                                        builder: (context) => HomePage(userModel: usermodel)),
-                                  );
+                                  context.read<LoginModel>().isChecking? null:
+                                  showDialog(
+                                      context: context,
+                                      builder: (c){
+                                        return loadingDialog(message: "Logging In");
+                                      });
+                                  Future.delayed(Duration(seconds: 3)).then((value) {
+                                    Navigator.pop(context); // Dismiss the dialog
+                                  });
+                                  context.read<LoginModel>().isLogging? null:
+                                  showDialog(
+                                      context: context,
+                                      builder: (c){
+                                        return loadingDialog(message: "Checking Account Info");
+                                      });
+                                  Future.delayed(Duration(seconds: 5)).then((value) {
+                                    Navigator.pop(context); // Dismiss the dialog
+                                  });
+
+                                  print("tap");
+                                  Future.delayed(Duration(seconds: 5)).then((value) {
+                                    Navigator.push(
+                                      context,
+                                      MaterialPageRoute(
+                                          builder: (context) => HomePage(userdata: context.read<LoginModel>().email.toString())),
+                                    );
+                                  });
                                 } on FirebaseAuthException catch (e) {
                                   ScaffoldMessenger.of(context)
                                       .showSnackBar(SnackBar(
