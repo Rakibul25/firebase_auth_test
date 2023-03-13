@@ -336,7 +336,29 @@ class SignupScreen extends StatelessWidget {
                             const Size(70, 70),
                           ),
                         ),
-                        onPressed: () {},
+                        onPressed: () async {
+                          try{
+                            await context
+                                .read<UserProvider>()
+                                .signInWithFacebook()
+                                .then((value) => Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                  builder: (context) => HomePage(
+                                    userdata: context
+                                        .read<UserProvider>()
+                                        .userName
+                                        .toString(),
+                                  )),
+                            ));
+                          }on FirebaseAuthException catch (e){
+                            ScaffoldMessenger.of(context)
+                                .showSnackBar(SnackBar(
+                              content: Text('Login failed: ${e.message}'),
+                              duration: const Duration(seconds: 5),
+                            ));
+                          }
+                        },
                         child: Image.asset(
                           "assets/fb.png",
                           height: 60,
@@ -396,7 +418,7 @@ class SignupScreen extends StatelessWidget {
                                         context: context,
                                         builder: (c) {
                                           return loadingDialog(
-                                              message: "message");
+                                              message: "Loading");
                                         });
                                 Future.delayed(const Duration(seconds: 2))
                                     .then((value) {

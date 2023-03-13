@@ -3,6 +3,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 import '../models/user.dart';
+import 'package:flutter_facebook_auth/flutter_facebook_auth.dart';
 
 class UserProvider extends ChangeNotifier {
   UserModel _usermodel = UserModel(name: '', email: '', password: '');
@@ -12,6 +13,27 @@ class UserProvider extends ChangeNotifier {
   bool isLoading = false;
   bool isChecking = false;
   UserModel get usermodel => _usermodel;
+  String userName = "";
+
+  //facebook signup
+  Future<UserCredential> signInWithFacebook() async {
+    // Trigger the sign-in flow
+    final LoginResult loginResult = await FacebookAuth.instance.login(
+        permissions: ['email', 'public_profile', 'user_birthday']
+    );
+
+    // Create a credential from the access token
+    final OAuthCredential facebookAuthCredential = FacebookAuthProvider.credential(loginResult.accessToken!.token);
+
+    final userData = await FacebookAuth.instance.getUserData();
+
+    userName = userData['name'].toString();
+    notifyListeners();
+
+    // Once signed in, return the UserCredential
+    return FirebaseAuth.instance.signInWithCredential(facebookAuthCredential);
+    notifyListeners();
+  }
 
 
 

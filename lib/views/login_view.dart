@@ -110,8 +110,8 @@ class _LoginViewState extends State<LoginView> {
                       floatingLabelBehavior: FloatingLabelBehavior.always,
                     ),
                     onChanged: (value) {
-                      Provider.of<LoginModel>(context, listen: false).email =
-                          value;
+                      Provider.of<LoginController>(context, listen: false)
+                          .email = value;
                     },
                   ),
                   SizedBox(
@@ -120,7 +120,8 @@ class _LoginViewState extends State<LoginView> {
                   //Password field
                   TextField(
                     controller: _passwordController,
-                    obscureText: Provider.of<LoginModel>(context).isObscure,
+                    obscureText:
+                        Provider.of<LoginController>(context).isObscure,
                     style: const TextStyle(color: Colors.white),
                     decoration: InputDecoration(
                       labelText: 'Enter Password',
@@ -134,7 +135,7 @@ class _LoginViewState extends State<LoginView> {
                           color: Colors.white,
                         ),
                         onPressed: () {
-                          Provider.of<LoginModel>(context, listen: false)
+                          Provider.of<LoginController>(context, listen: false)
                               .toggleObscure();
                         },
                       ),
@@ -147,8 +148,8 @@ class _LoginViewState extends State<LoginView> {
                       floatingLabelBehavior: FloatingLabelBehavior.always,
                     ),
                     onChanged: (value) {
-                      Provider.of<LoginModel>(context, listen: false).password =
-                          value;
+                      Provider.of<LoginController>(context, listen: false)
+                          .password = value;
                     },
                   ),
                   SizedBox(
@@ -158,8 +159,7 @@ class _LoginViewState extends State<LoginView> {
                     mainAxisAlignment: MainAxisAlignment.end,
                     children: [
                       TextButton(
-                        onPressed: () {
-                        },
+                        onPressed: () {},
                         child: const Text(
                           'Forgot Password?',
                           style: TextStyle(
@@ -187,7 +187,6 @@ class _LoginViewState extends State<LoginView> {
                   ),
                   Row(
                     children: [
-
                       //google login
                       ElevatedButton(
                         style: ButtonStyle(
@@ -199,14 +198,14 @@ class _LoginViewState extends State<LoginView> {
                         ),
                         onPressed: () {
                           context
-                              .read<LoginModel>()
+                              .read<LoginController>()
                               .googleLogin()
                               .then((value) => Navigator.push(
                                     context,
                                     MaterialPageRoute(
                                         builder: (context) => HomePage(
                                             userdata: context
-                                                .read<LoginModel>()
+                                                .read<LoginController>()
                                                 .user
                                                 .email
                                                 .toString())),
@@ -229,7 +228,29 @@ class _LoginViewState extends State<LoginView> {
                             const Size(80, 80),
                           ),
                         ),
-                        onPressed: () {},
+                        onPressed: () async {
+                          try{
+                            await context
+                                .read<LoginController>()
+                                .signInWithFacebook()
+                                .then((value) => Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                  builder: (context) => HomePage(
+                                    userdata: context
+                                        .read<LoginController>()
+                                        .userName
+                                        .toString(),
+                                  )),
+                            ));
+                          }on FirebaseAuthException catch (e){
+                            ScaffoldMessenger.of(context)
+                                .showSnackBar(SnackBar(
+                              content: Text('Login failed: ${e.message}'),
+                              duration: const Duration(seconds: 5),
+                            ));
+                          }
+                        },
                         child: Image.asset(
                           "assets/fb.png",
                           height: 70,
@@ -279,14 +300,15 @@ class _LoginViewState extends State<LoginView> {
                             const Size(150, 50),
                           ),
                         ),
-                        onPressed: Provider.of<LoginModel>(context).isLoading
+                        onPressed: Provider.of<LoginController>(context)
+                                .isLoading
                             ? null
                             : () async {
                                 try {
-                                  await Provider.of<LoginModel>(context,
+                                  await Provider.of<LoginController>(context,
                                           listen: false)
                                       .login();
-                                  context.read<LoginModel>().isChecking
+                                  context.read<LoginController>().isChecking
                                       ? null
                                       : showDialog(
                                           context: context,
@@ -299,7 +321,7 @@ class _LoginViewState extends State<LoginView> {
                                     Navigator.pop(
                                         context); // Dismiss the dialog
                                   });
-                                  context.read<LoginModel>().isLogging
+                                  context.read<LoginController>().isLogging
                                       ? null
                                       : showDialog(
                                           context: context,
@@ -322,7 +344,7 @@ class _LoginViewState extends State<LoginView> {
                                       MaterialPageRoute(
                                           builder: (context) => HomePage(
                                               userdata: context
-                                                  .read<LoginModel>()
+                                                  .read<LoginController>()
                                                   .email
                                                   .toString())),
                                     );
