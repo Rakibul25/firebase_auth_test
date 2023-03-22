@@ -51,7 +51,7 @@ class _HomePageState extends State<HomePage> {
           children: [
             Text(
               '${widget.userdata}',
-              style: const TextStyle(fontSize: 20),
+              style: const TextStyle(fontSize: 20,color: Colors.blue),
             ),
             const SizedBox(height: 16),
             const Divider(),

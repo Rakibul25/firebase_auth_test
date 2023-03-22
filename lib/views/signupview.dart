@@ -19,16 +19,16 @@ class SignupScreen extends StatelessWidget {
     //to adjust screen size when keyboard popup
     final bool isKeyboard = MediaQuery.of(context).viewInsets.bottom != 0;
     return Scaffold(
-      backgroundColor: Colors.purple,
+      backgroundColor: Colors.blueGrey.shade900,
       body: Container(
         height: size.height,
-        decoration: const BoxDecoration(
+        decoration:  BoxDecoration(
             gradient: LinearGradient(
           begin: Alignment.topLeft,
           end: Alignment.bottomRight,
           colors: [
-            Colors.redAccent,
-            Colors.purple,
+            Colors.blueGrey.shade600,
+            Colors.blueGrey.shade900,
           ],
         )),
         child: SafeArea(
