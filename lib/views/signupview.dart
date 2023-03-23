@@ -75,11 +75,14 @@ class SignupScreen extends StatelessWidget {
                       height:
                           isKeyboard ? size.height * .008 : size.height * .02),
                   //to show email valid or not
-                  Text(
-                    context.watch<UserProvider>().isValidMail()
-                        ? 'Email Valid'
-                        : '* Email Invalid',
-                    style: const TextStyle(color: Colors.white, fontSize: 15),
+                  Visibility(
+                    visible: _emailController.text.isNotEmpty,
+                    child: Text(
+                      context.watch<UserProvider>().isValidMail()
+                          ? 'Email Valid'
+                          : '* Email Invalid',
+                      style: const TextStyle(color: Colors.white, fontSize: 15),
+                    ),
                   ),
                   SizedBox(
                       height:
@@ -111,11 +114,14 @@ class SignupScreen extends StatelessWidget {
                       height:
                           isKeyboard ? size.height * .008 : size.height * .02),
                   //to show password valid or not
-                  Text(
-                    context.watch<UserProvider>().isValidPass()
-                        ? 'Password Valid'
-                        : '* Password Invalid',
-                    style: const TextStyle(color: Colors.white, fontSize: 15),
+                  Visibility(
+                    visible: _passwordController.text.isNotEmpty,
+                    child: Text(
+                      context.watch<UserProvider>().isValidPass()
+                          ? 'Password Valid'
+                          : '* Password Invalid',
+                      style: const TextStyle(color: Colors.white, fontSize: 15),
+                    ),
                   ),
                   SizedBox(
                       height:
