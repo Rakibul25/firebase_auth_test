@@ -6,3 +6,10 @@ The app supports manual signup, allowing users to create an account using their 
 In addition, the app has a built-in feature to validate email and password inputs. This means that the app will check whether the email is a valid email format and whether the password meets the minimum requirements (such as minimum length, uppercase letters, or special characters). This ensures that users create strong and secure passwords and helps to prevent unauthorized access to their accounts.
 
 Overall, it provides a simple and effective way for users to create accounts and securely access key features using Firebase and Firestore.
+
+# Technology, tools
+
+# LoginPage
+This project provides a default login page that includes multiple login options to cater to the needs of all users. Users can either login manually using their email and password, or login with their Facebook or Google account.
+The password field has a hide/show option, allowing users to choose whether they want to hide or show the characters they are typing. This provides an added layer of security and helps users to avoid typos while entering their password.
+When a user enters their email and password on the login page, the app will first check if the user exists in the database. If the user is already registered, the app will redirect the user to the home page. Similarly, when a user logs in with their Facebook or Google account, the app will authenticate the user and redirect them to the home page.
