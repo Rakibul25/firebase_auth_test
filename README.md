@@ -7,7 +7,8 @@ In addition, the app has a built-in feature to validate email and password input
 
 Overall, it provides a simple and effective way for users to create accounts and securely access key features using Firebase and Firestore.
 
-# Technology, tools
+# Tools & Technology
+Developed using Flutter with state management handled by Provider. Firebase was used for the backend, with Firebase Authentication for user authentication and Firestore for data storage and retrieval. The app followed the MVC architecture to ensure maintainability and extendibility.
 
 # LoginPage
 This project provides a default login page that includes multiple login options to cater to the needs of all users. Users can either login manually using their email and password, or login with their Facebook or Google account.
