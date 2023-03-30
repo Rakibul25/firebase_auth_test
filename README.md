@@ -9,7 +9,7 @@ Also this app was designed to adjust the UI layout when the keyboard is opened t
 
 Overall, it provides a simple and effective way for users to create accounts and securely access key features using Firebase and Firestore.
 
-# Tools & Technology
+# About Tools & Technology
 Developed using Flutter with state management handled by Provider. Firebase was used for the backend, with Firebase Authentication for user authentication and Firestore for data storage and retrieval. The app followed the MVC architecture to ensure maintainability and extendibility.
 
 # LoginPage
@@ -40,3 +40,64 @@ When a user enters their email and password on the login page, the app will firs
     <td><img src="https://github.com/Rakibul25/firebase_auth_test/blob/main/ss/loggingin.jpg" width="200" height="440"></td>
   </tr>
  </table>
+ 
+# SignUp
+It allows users to create an account manually with their name, email, and password with the help of firebase auth and firestore. The email field has validation rules to ensure that the email address entered is valid, while the password field has specific requirements, such as a minimum length of 8 characters and a maximum length of 14 characters, at least one lowercase letter, one uppercase letter, one number, and one special character. If the email and password is valid then it will show password and email are valid.
+In addition to manual signup, users can also sign up using their Google or Facebook accounts. This process is facilitated by Firebase Authentication, which handles the signup process securely and efficiently.
+Once a user has successfully signed up, they will be redirected to the home page of the app. All user data is stored in Firestore, which provides real-time data synchronization and efficient data retrieval.
+
+<table>
+  <tr>
+     <td>SignUp</td>
+  </tr>
+  <tr>
+    <td><img src="https://github.com/Rakibul25/firebase_auth_test/blob/main/ss/signup_normal.jpg" width="200" height="440"></td>
+  </tr>
+ </table>
+ 
+ <table>
+  <tr>
+     <td>Invalid Email</td>
+     <td>Valid Email</td>
+  </tr>
+  <tr>
+    <td><img src="https://github.com/Rakibul25/firebase_auth_test/blob/main/ss/email_invalid.jpg" width="200" height="440"></td>
+    <td><img src="https://github.com/Rakibul25/firebase_auth_test/blob/main/ss/email_valid.jpg" width="200" height="440"></td>
+  </tr>
+ </table>
+ 
+  <table>
+  <tr>
+     <td>Invalid Password</td>
+     <td>Valid Password</td>
+  </tr>
+  <tr>
+    <td><img src="https://github.com/Rakibul25/firebase_auth_test/blob/main/ss/invalid_pass.jpg" width="200" height="440"></td>
+    <td><img src="https://github.com/Rakibul25/firebase_auth_test/blob/main/ss/valid_pass.jpg" width="200" height="440"></td>
+  </tr>
+ </table>
+ 
+   <table>
+  <tr>
+     <td>Facebook SignUp</td>
+     <td>Google SignUp</td>
+     <td>Signing Up and redirecting to home</td>
+  </tr>
+  <tr>
+    <td><img src="https://github.com/Rakibul25/firebase_auth_test/blob/main/ss/facebook_prompt.jpg" width="200" height="440"></td>
+    <td><img src="https://github.com/Rakibul25/firebase_auth_test/blob/main/ss/google_login.jpg" width="200" height="440"></td>
+    <td><img src="https://github.com/Rakibul25/firebase_auth_test/blob/main/ss/facebook_loading.jpg" width="200" height="440"></td>
+  </tr>
+ </table>
+ 
+<table>
+  <tr>
+     <td>Home</td>
+  </tr>
+  <tr>
+    <td><img src="https://github.com/Rakibul25/firebase_auth_test/blob/main/ss/home.jpg" width="200" height="440"></td>
+  </tr>
+ </table>
+ 
+ # Developed by
+[Rakibul Islam](https://github.com/Rakibul25)
