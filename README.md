@@ -8,6 +8,8 @@ Also this app adjust the UI layout when the keyboard is opened to ensure that no
 
 Overall, it provides a simple and effective way for users to create accounts and securely access key features using Firebase and Firestore.
 
+[Video Preview](https://www.linkedin.com/posts/rakibul-islam-9078b1187_flutter-firebase-flutterdeveloper-activity-7047860195951071232-dUFb?utm_source=share&utm_medium=member_desktop)
+
 # About Tools & Technology
 Developed using Flutter with state management handled by Provider. Firebase was used for the backend, with Firebase Authentication for user authentication and Firestore for data storage and retrieval. The app followed the MVC architecture to ensure maintainability and extendibility.
 
